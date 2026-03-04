@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_song/data/repositories/songs/song_repository.dart';
 import 'package:test_song/model/songs/song.dart';
-import 'package:test_song/ui/states/player_state.dart';
+import 'package:test_song/ui/screens/library/view_model/library_view_model.dart';
 import 'package:test_song/ui/states/settings_state.dart';
 import 'package:test_song/ui/theme/theme.dart';
 
@@ -11,19 +10,15 @@ class LibraryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1- Read the globbal song repository
-    SongRepository songRepository = context.read<SongRepository>();
-    List<Song> songs = songRepository.fetchSongs();
+    // watch the library view model
+    LibraryViewModel viewModel = context.watch<LibraryViewModel>();
 
-    // 2- Read the globbal settings state
-    AppSettingsState settingsState = context.read<AppSettingsState>();
+    // Watch the app setting state for theme
+    AppSettingsState settingsState = context.watch<AppSettingsState>();
 
-    // 3 - Watch the globbal player state
-    PlayerState playerState = context.watch<PlayerState>();
-
-    return Container(
-      color: settingsState.theme.backgroundColor,
-      child: Column(
+    return Scaffold(
+      backgroundColor: settingsState.theme.backgroundColor,
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 16),
@@ -31,17 +26,41 @@ class LibraryContent extends StatelessWidget {
 
           SizedBox(height: 50),
 
+          Text(
+            "Your recent Song",
+            style: TextStyle(color: AppColors.neutralLight),
+          ),
           Expanded(
             child: ListView.builder(
-              itemCount: songs.length,
+              itemCount: viewModel.songs.length,
               itemBuilder: (context, index) => SongTile(
-                song: songs[index],
-                isPlaying: playerState.currentSong == songs[index],
+                song: viewModel.songs[index],
+                isPlaying: viewModel.isSongPlaying(viewModel.songs[index]),
                 onTap: () {
-                  playerState.start(songs[index]);
+                  viewModel.play(viewModel.songs[index]);
                 },
                 onStop: () {
-                  playerState.stop();
+                  viewModel.stop();
+                },
+              ),
+            ),
+          ),
+
+          Text(
+            "You might also like",
+            style: TextStyle(color: AppColors.neutralLight),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: viewModel.songs.length,
+              itemBuilder: (context, index) => SongTile(
+                song: viewModel.songs[index],
+                isPlaying: viewModel.isSongPlaying(viewModel.songs[index]),
+                onTap: () {
+                  viewModel.play(viewModel.songs[index]);
+                },
+                onStop: () {
+                  viewModel.stop();
                 },
               ),
             ),
