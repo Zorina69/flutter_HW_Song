@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:nested/nested.dart';
+import 'package:test_song/ui/screens/library/widgets/library_content.dart';
 import 'ui/screens/favorite/favorite_screen.dart';
-import 'ui/screens/library/library_screen.dart';
 import 'ui/screens/settings/settings_screen.dart';
 import 'ui/states/settings_state.dart';
 import 'ui/theme/theme.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _currentIndex = 1;
 
-  final List<Widget> _pages = [LibraryScreen(), FavoriteScreen(), SettingsScreen()];
+  final List<Widget> _pages = [LibraryContent(), FavoriteScreen(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {

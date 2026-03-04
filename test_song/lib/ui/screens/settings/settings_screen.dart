@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_song/model/settings/app_settings.dart';
+
+import '../../../model/settings/app_settings.dart';
 import '../../states/settings_state.dart';
 import '../../theme/theme.dart';
 import 'widget/theme_color_button.dart';
@@ -10,12 +11,11 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Watch the app settings state for theme
     AppSettingsState settingsState = context.watch<AppSettingsState>();
 
-    return Scaffold(
-      backgroundColor: settingsState.theme.backgroundColor,
-      body: Column(
+    return Container(
+      color: settingsState.theme.backgroundColor,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 16),
@@ -36,9 +36,9 @@ class SettingsScreen extends StatelessWidget {
                 .map(
                   (theme) => ThemeColorButton(
                     themeColor: theme,
-                    isSelected: settingsState.theme == theme,
+                    isSelected: theme == settingsState.theme,
                     onTap: (value) {
-                      settingsState.changeTheme(value);
+                      settingsState.changeTheme(theme);
                     },
                   ),
                 )
