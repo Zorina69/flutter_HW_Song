@@ -8,6 +8,7 @@ class LibraryViewModel extends ChangeNotifier {
   final PlayerState playerState;
 
   List<Song> _songs = [];
+  List<Song> recentSong = [];
   LibraryViewModel({required this.songRepository, required this.playerState}) {
     playerState.addListener(_onPlayerStateChanged);
   }
@@ -21,13 +22,20 @@ class LibraryViewModel extends ChangeNotifier {
   }
 
   //Initialize and fetch song
-  Future<void> init() async{
+  Future<void> init() async {
     _songs = songRepository.fetchSongs();
     notifyListeners();
   }
+
   // User Actions
   void play(Song song) {
     playerState.start(song);
+    if (recentSong.contains(song)) {
+      null;
+    }else{
+      recentSong.add(song);
+    }
+    
   }
 
   void stop() {
