@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import '../../model/songs/song.dart';
 
 class PlayerState extends ChangeNotifier {
